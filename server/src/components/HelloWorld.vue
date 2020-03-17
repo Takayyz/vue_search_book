@@ -7,9 +7,21 @@
         </div>
         <div class="search">
           <div class="search__text">
-            <input type="text" id="js-search-word" class="search__text__input" placeholder="タイトル、著者...">
+            <input
+              @input="form.inputValue = $event.target.value"
+              type="text"
+              id="js-search-word"
+              class="search__text__input"
+              placeholder="タイトル、著者..."
+            >
           </div>
-          <button id="js-search-button" class="search__btn">検索する</button>
+          <button
+            @click="doSearch"
+            id="js-search-button"
+            class="search__btn"
+          >
+            検索する
+          </button>
         </div>
         <ul class="lists">
           <li class='lists__item'>
@@ -115,7 +127,24 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      // msg: 'Welcome to Your Vue.js App'
+      form: {
+        inputValue: '',
+        oldValue: ''
+      },
+      page: 1
+    }
+  },
+  methods: {
+    doSearch() {
+      if (this.form.inputValue !== '' && this.form.inputValue === this.form.oldValue) {
+        console.log('test');
+        this.page++;
+      } else {
+        this.page = 1;
+        this.form.oldValue = this.form.inputValue;
+      }
+      // 検索処理
     }
   }
 }
