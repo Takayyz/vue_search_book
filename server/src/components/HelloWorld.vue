@@ -123,29 +123,52 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: 'HelloWorld',
   data () {
     return {
       // msg: 'Welcome to Your Vue.js App'
+      url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
       form: {
-        inputValue: '',
-        oldValue: ''
+        searchWord: '',
+        prevSearchWord: ''
       },
       page: 1
     }
   },
   methods: {
     doSearch() {
-      if (this.form.inputValue !== '' && this.form.inputValue === this.form.oldValue) {
+      if (this.form.searchWord !== '' && this.form.searchWord === this.form.prevSearchWord) {
         console.log('test');
         this.page++;
       } else {
         this.page = 1;
-        this.form.oldValue = this.form.inputValue;
+        this.form.prevSearchWord = this.form.searchWord;
       }
-      // 検索処理
-    }
+
+      axios.get(this.url, {
+        params: {
+          datatype: 'json',
+          data: {
+            applicationId: '1019399324990976605',
+            booksGenreId: '001',
+            page: this.page,
+            title: 'html'
+          }
+        }
+      }).then(({ data }) => {
+        console.log('ok');
+        console.log(data);
+      }).catch((err) => {
+        console.log('err');
+        console.log(err);
+      });
+    },
+    // difinePage() {
+
+    // }
   }
 }
 </script>
@@ -195,6 +218,7 @@ export default {
   color: #fff;
   background-color: #43cee0;
   cursor: pointer;
+  outline: none;
 }
 .search__btn:hover {
   background-color: #1eabbd;
