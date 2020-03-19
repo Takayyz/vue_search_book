@@ -8,7 +8,7 @@
         <div class="search">
           <div class="search__text">
             <input
-              @input="form.inputValue = $event.target.value"
+              @input="form.searchWord = $event.target.value"
               type="text"
               id="js-search-word"
               class="search__text__input"
@@ -135,40 +135,41 @@ export default {
         searchWord: '',
         prevSearchWord: ''
       },
-      page: 1
+      page: 1,
+      hits: 20,
+      items: '',
+      errorMessage: ''
     }
   },
   methods: {
-    doSearch() {
+    definePage() {
       if (this.form.searchWord !== '' && this.form.searchWord === this.form.prevSearchWord) {
-        console.log('test');
         this.page++;
       } else {
         this.page = 1;
         this.form.prevSearchWord = this.form.searchWord;
       }
+    },
+    doSearch() {
+      this.definePage();
 
       axios.get(this.url, {
         params: {
           datatype: 'json',
-          data: {
-            applicationId: '1019399324990976605',
-            booksGenreId: '001',
-            page: this.page,
-            title: 'html'
-          }
+          applicationId: '1019399324990976605',
+          booksGenreId: '001',
+          hits: this.hits,
+          page: this.page,
+          keyword: this.form.searchWord,
         }
       }).then(({ data }) => {
-        console.log('ok');
-        console.log(data);
+        // 都度this.itemsに追加するのはよくなさそう...
+        (data.count > 0) ? this.items = data.Items : this.errorMessage = '検索結果がありません。';
       }).catch((err) => {
         console.log('err');
         console.log(err);
       });
     },
-    // difinePage() {
-
-    // }
   }
 }
 </script>
