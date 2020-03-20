@@ -47,88 +47,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="hello">
-      <h1>{{ msg }}</h1>
-      <h2>Essential Links</h2>
-      <ul>
-        <li>
-          <a
-            href="https://vuejs.org"
-            target="_blank"
-          >
-            Core Docs
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://forum.vuejs.org"
-            target="_blank"
-          >
-            Forum
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://chat.vuejs.org"
-            target="_blank"
-          >
-            Community Chat
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://twitter.com/vuejs"
-            target="_blank"
-          >
-            Twitter
-          </a>
-        </li>
-        <br>
-        <li>
-          <a
-            href="http://vuejs-templates.github.io/webpack/"
-            target="_blank"
-          >
-            Docs for This Template
-          </a>
-        </li>
-      </ul>
-      <h2>Ecosystem</h2>
-      <ul>
-        <li>
-          <a
-            href="http://router.vuejs.org/"
-            target="_blank"
-          >
-            vue-router
-          </a>
-        </li>
-        <li>
-          <a
-            href="http://vuex.vuejs.org/"
-            target="_blank"
-          >
-            vuex
-          </a>
-        </li>
-        <li>
-          <a
-            href="http://vue-loader.vuejs.org/"
-            target="_blank"
-          >
-            vue-loader
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://github.com/vuejs/awesome-vue"
-            target="_blank"
-          >
-            awesome-vue
-          </a>
-        </li>
-      </ul>
-    </div> -->
   </div>
 </template>
 
@@ -139,7 +57,6 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      // msg: 'Welcome to Your Vue.js App'
       url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
       form: {
         searchWord: '',
@@ -173,7 +90,7 @@ export default {
           keyword: this.form.searchWord,
         }
       }).then(({ data }) => {
-        // 都度this.itemsに追加するのはよくなさそう...
+        console.log(data);
         (data.count > 0) ? this.items = data.Items : this.errorMessage = '検索結果がありません。';
       }).catch((err) => {
         console.log('err');
@@ -275,17 +192,14 @@ export default {
   margin-bottom: 50px;
   text-align: center;
 }
-
 .pager {
   border-top: 1px solid #ccc;
   padding: 35px 0;
 }
-
 .btn__wrapper {
   display: flex;
   justify-content: center;
 }
-
 .pager__btn {
   margin-left: 10px;
   width: 80px;
@@ -294,23 +208,18 @@ export default {
   background-color: #43cee0;
   box-sizing: border-box;
 }
-
 .pager__btn:first-child {
   margin-left: 0;
 }
-
 .pager__btn:hover:not(.disabled) {
   background-color: #1eabbd;
 }
-
 .disabled {
   background-color: #888;
 }
-
 .disabled .btn__anchor {
   cursor: default;
 }
-
 .btn__anchor {
   display: block;
   height: 100%;
@@ -318,19 +227,16 @@ export default {
   text-align: center;
   color: #fff;
 }
-
 @media screen and (max-width: 767px) {
   .lists__item {
     width: 33.33%;
   }
 }
-
 @media screen and (max-width: 479px) {
   .lists__item {
     width: 50%;
   }
 }
-
 h1, h2 {
   font-weight: normal;
 }
