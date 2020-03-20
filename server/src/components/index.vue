@@ -126,6 +126,7 @@ input:-webkit-autofill {
   background-color: #43cee0;
 }
 .header__title {
+  margin: 0;
   line-height: 60px;
   text-align: center;
   font-size: 20px;
