@@ -35,6 +35,16 @@
           </div>
          </li>
         </ul>
+        <div class="pager">
+          <ul class="btn__wrapper">
+            <li class="is-prev pager__btn disabled">
+              <a href="#" class="btn__anchor">前へ</a>
+            </li>
+            <li class="is-next pager__btn">
+              <a href="#" class="btn__anchor">次へ</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <!-- <div class="hello">
@@ -266,6 +276,49 @@ export default {
   text-align: center;
 }
 
+.pager {
+  border-top: 1px solid #ccc;
+  padding: 35px 0;
+}
+
+.btn__wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.pager__btn {
+  margin-left: 10px;
+  width: 80px;
+  height: 40px;
+  line-height: 40px;
+  background-color: #43cee0;
+  box-sizing: border-box;
+}
+
+.pager__btn:first-child {
+  margin-left: 0;
+}
+
+.pager__btn:hover:not(.disabled) {
+  background-color: #1eabbd;
+}
+
+.disabled {
+  background-color: #888;
+}
+
+.disabled .btn__anchor {
+  cursor: default;
+}
+
+.btn__anchor {
+  display: block;
+  height: 100%;
+  font-size: 16px;
+  text-align: center;
+  color: #fff;
+}
+
 @media screen and (max-width: 767px) {
   .lists__item {
     width: 33.33%;
@@ -291,5 +344,6 @@ li {
 }
 a {
   color: #42b983;
+  text-decoration: none;
 }
 </style>
