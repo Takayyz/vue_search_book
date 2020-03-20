@@ -23,28 +23,35 @@
             検索する
           </button>
         </div>
-        <ul class="lists">
-          <li class='lists__item'>
-          <div class='lists__item__inner'>
-            <a href='' class='lists__item__link' target='_blank'>
-              <img src='' class='lists__item__img' alt=''>
-              <p class='lists__item__detail'>作品名：</p>
-              <p class='lists__item__detail'>作者　：</p>
-              <p class='lists__item__detail'>出版社：</p>
-            </a>
-          </div>
-         </li>
-        </ul>
-        <div class="pager">
-          <ul class="btn__wrapper">
-            <li class="is-prev pager__btn disabled">
-              <a href="#" class="btn__anchor">前へ</a>
-            </li>
-            <li class="is-next pager__btn">
-              <a href="#" class="btn__anchor">次へ</a>
+        <template v-if="this.items">
+          <ul class="lists">
+            <li
+              v-for="(item, index) in this.items"
+              :key="index"
+              class='lists__item'
+            >
+              <div class='lists__item__inner'>
+                <a v-bind:href="item.Item.itemUrl" class='lists__item__link' target='_blank'>
+                  <img :src='item.Item.largeImageUrl' class='lists__item__img' alt=''>
+                  <p class='lists__item__detail'>作品名：{{ item.Item.title }}</p>
+                  <p class='lists__item__detail'>作者　：{{ item.Item.author }}</p>
+                  <p class='lists__item__detail'>出版社：{{ item.Item.publisherName }}</p>
+                </a>
+              </div>
             </li>
           </ul>
-        </div>
+          <div class="pager">
+            <ul class="btn__wrapper">
+              <li class="is-prev pager__btn disabled">
+                <a href="#" class="btn__anchor">前へ</a>
+              </li>
+              <li class="is-next pager__btn">
+                <a href="#" class="btn__anchor">次へ</a>
+              </li>
+            </ul>
+          </div>
+        </template>
+        <p v-else-if="this.errorMessage">{{ this.errorMessage }}</p>
       </div>
     </div>
   </div>
@@ -77,6 +84,11 @@ export default {
         this.form.prevSearchWord = this.form.searchWord;
       }
     },
+    noResult() {
+      console.log('noResult');
+      this.items = '';
+      this.errorMessage = '検索結果がありません。';
+    },
     doSearch() {
       this.definePage();
 
@@ -90,8 +102,7 @@ export default {
           keyword: this.form.searchWord,
         }
       }).then(({ data }) => {
-        console.log(data);
-        (data.count > 0) ? this.items = data.Items : this.errorMessage = '検索結果がありません。';
+        (data.count > 0) ? this.items = data.Items : this.noResult();
       }).catch((err) => {
         console.log('err');
         console.log(err);
@@ -103,6 +114,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+a {
+  color: inherit;
+  text-decoration: none;
+}
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+}
 .header {
   width: 100%;
   background-color: #43cee0;
@@ -121,12 +139,12 @@ export default {
 }
 .search__text {
   width: 100%;
+  margin-bottom: 20px;
 }
 .search__text__input {
   -webkit-box-sizing: border-box;
       box-sizing: border-box;
   width: 100%;
-  margin-bottom: 20px;
   padding: 0 10px;
   line-height: 3em;
   border-top: none;
@@ -243,13 +261,5 @@ h1, h2 {
 ul {
   list-style-type: none;
   padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-  text-decoration: none;
 }
 </style>
