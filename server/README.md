@@ -1,15 +1,20 @@
-# search-
+# search-books app by vue.js
 
 > search books app by vue.js
 
 ## Build Setup
 
 ``` bash
+# build and run with docker-compose
+docker-compose up -d --build
+
 # install dependencies
 npm install
 
 # serve with hot reload at localhost:8080
 npm run dev
+
+# ↑↑↑↑とりあえずこのコマンドまで↑↑↑↑
 
 # build for production with minification
 npm run build
