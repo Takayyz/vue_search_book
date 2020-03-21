@@ -76,19 +76,6 @@ export default {
     }
   },
   methods: {
-    definePage() {
-      if (this.form.searchWord !== '' && this.form.searchWord === this.form.prevSearchWord) {
-        this.page++;
-      } else {
-        this.page = 1;
-        this.form.prevSearchWord = this.form.searchWord;
-      }
-    },
-    noResult() {
-      console.log('noResult');
-      this.items = '';
-      this.errorMessage = '検索結果がありません。';
-    },
     doSearch() {
       this.definePage();
 
@@ -104,9 +91,43 @@ export default {
       }).then(({ data }) => {
         (data.count > 0) ? this.items = data.Items : this.noResult();
       }).catch((err) => {
-        console.log('err');
-        console.log(err);
+        this.setError(err.response);
       });
+    },
+    definePage() {
+      if (this.form.searchWord !== '' && this.form.searchWord === this.form.prevSearchWord) {
+        this.page++;
+      } else {
+        this.page = 1;
+        this.form.prevSearchWord = this.form.searchWord;
+      }
+    },
+    noResult() {
+      this.items = '';
+      this.setErrorMessage('検索結果がありません。');
+    },
+    setError(err) {
+      this.items = '';
+      if (err) {
+        // error handling
+        switch (err.status) {
+          case 400:
+            this.setErrorMessage('検索ワードは2文字以上入力して下さい。');
+            break;
+          case 429:
+            this.setErrorMessage('検索ボタンを連打しないで下さい。');
+            break;
+          default:
+            this.setErrorMessage('予期せぬエラーが発生しました。管理者にお問い合わせ下さい。');
+            break;
+        }
+      } else {
+        // network error
+        this.setErrorMessage('ネットワークに接続されていません。');
+      }
+    },
+    setErrorMessage(message) {
+      this.errorMessage = message;
     },
   }
 }
