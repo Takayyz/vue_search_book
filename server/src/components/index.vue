@@ -42,10 +42,16 @@
           </ul>
           <div class="pager">
             <ul class="btn__wrapper">
-              <li class="is-prev pager__btn disabled">
+              <li
+                class="is-prev pager__btn"
+                :class="{ disabled: this.page === 1 }"
+              >
                 <a href="#" class="btn__anchor">前へ</a>
               </li>
-              <li class="is-next pager__btn">
+              <li
+                class="is-next pager__btn"
+                :class="{ disabled: this.isMax }"
+              >
                 <a href="#" class="btn__anchor">次へ</a>
               </li>
             </ul>
@@ -74,7 +80,8 @@ export default {
       },
       page: 1,
       items: [],
-      errorMessage: ''
+      errorMessage: '',
+      isMax: false
     }
   },
   methods: {
@@ -91,7 +98,7 @@ export default {
           keyword: this.form.searchWord,
         }
       }).then(({ data }) => {
-        (data.count > 0) ? this.items = data.Items : this.noResult();
+        (data.count > 0) ? this.createList(data) : this.noResult();
       }).catch((err) => {
         this.setError(err.response);
       });
@@ -102,6 +109,14 @@ export default {
       } else {
         this.page = 1;
         this.form.prevSearchWord = this.form.searchWord;
+      }
+    },
+    createList(data) {
+      console.log('createList');
+      console.log(data);
+      this.items = data.Items;
+      if (data.count === data.last) {
+        this.isMax = true;
       }
     },
     noResult() {
@@ -261,6 +276,7 @@ input:-webkit-autofill {
 }
 .disabled .btn__anchor {
   cursor: default;
+  pointer-events: none;
 }
 .btn__anchor {
   display: block;
