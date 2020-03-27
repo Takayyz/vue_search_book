@@ -64,7 +64,6 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
       form: {
         searchWord: '',
         prevSearchWord: ''
@@ -78,11 +77,13 @@ export default {
   methods: {
     doSearch() {
       this.definePage();
+      const RAKUTEN_API_URL = process.env.RAKUTEN_API_URL;
+      const RAKUTEN_API_ID = process.env.RAKUTEN_API_ID;
 
-      axios.get(this.url, {
+      axios.get(RAKUTEN_API_URL, {
         params: {
           datatype: 'json',
-          applicationId: '1019399324990976605',
+          applicationId: RAKUTEN_API_ID,
           booksGenreId: '001',
           hits: this.hits,
           page: this.page,
