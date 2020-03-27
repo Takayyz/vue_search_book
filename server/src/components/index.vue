@@ -23,7 +23,7 @@
             検索する
           </button>
         </div>
-        <template v-if="this.items">
+        <template v-if="this.items.length">
           <ul class="lists">
             <li
               v-for="(item, index) in this.items"
@@ -60,6 +60,10 @@
 <script>
 import axios from "axios";
 
+const RAKUTEN_API_URL = process.env.RAKUTEN_API_URL;
+const RAKUTEN_API_ID = process.env.RAKUTEN_API_ID;
+const HITS = 20;
+
 export default {
   name: 'HelloWorld',
   data () {
@@ -69,23 +73,20 @@ export default {
         prevSearchWord: ''
       },
       page: 1,
-      hits: 20,
-      items: '',
+      items: [],
       errorMessage: ''
     }
   },
   methods: {
     doSearch() {
       this.definePage();
-      const RAKUTEN_API_URL = process.env.RAKUTEN_API_URL;
-      const RAKUTEN_API_ID = process.env.RAKUTEN_API_ID;
 
       axios.get(RAKUTEN_API_URL, {
         params: {
           datatype: 'json',
           applicationId: RAKUTEN_API_ID,
           booksGenreId: '001',
-          hits: this.hits,
+          hits: HITS,
           page: this.page,
           keyword: this.form.searchWord,
         }
