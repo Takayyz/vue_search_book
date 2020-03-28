@@ -90,12 +90,16 @@ export default {
     doSearch() {
       this.page = 1;
       this.form.prevSearchWord = this.form.searchWord;
+      this.isMax = false;
       this.fetchData();
     },
     goPrev() {
       console.log('goPrev');
-      thie.page--;
-      fetchData();
+      if (this.page !== 1) {
+        this.page--;
+        this.isMax = false;
+        this.fetchData();
+      }
     },
     goNext() {
       console.log('goNext');
