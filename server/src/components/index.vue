@@ -45,14 +45,16 @@
               <li
                 class="is-prev pager__btn"
                 :class="{ disabled: this.page === 1 }"
+                @click="goPrev"
               >
-                <a href="#" class="btn__anchor">前へ</a>
+                <span class="btn__anchor">前へ</span>
               </li>
               <li
                 class="is-next pager__btn"
                 :class="{ disabled: this.isMax }"
+                @click="goNext"
               >
-                <a href="#" class="btn__anchor">次へ</a>
+                <span class="btn__anchor">次へ</span>
               </li>
             </ul>
           </div>
@@ -86,8 +88,23 @@ export default {
   },
   methods: {
     doSearch() {
-      this.definePage();
-
+      this.page = 1;
+      this.form.prevSearchWord = this.form.searchWord;
+      this.fetchData();
+    },
+    goPrev() {
+      console.log('goPrev');
+      thie.page--;
+      fetchData();
+    },
+    goNext() {
+      console.log('goNext');
+      if (!this.isMax) {
+        this.page++;
+        this.fetchData();
+      }
+    },
+    fetchData() {
       axios.get(RAKUTEN_API_URL, {
         params: {
           datatype: 'json',
@@ -102,14 +119,6 @@ export default {
       }).catch((err) => {
         this.setError(err.response);
       });
-    },
-    definePage() {
-      if (this.form.searchWord !== '' && this.form.searchWord === this.form.prevSearchWord) {
-        this.page++;
-      } else {
-        this.page = 1;
-        this.form.prevSearchWord = this.form.searchWord;
-      }
     },
     createList(data) {
       console.log('createList');
@@ -284,6 +293,7 @@ input:-webkit-autofill {
   font-size: 16px;
   text-align: center;
   color: #fff;
+  cursor: pointer;
 }
 @media screen and (max-width: 767px) {
   .lists__item {
